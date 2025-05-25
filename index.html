@@ -21,14 +21,11 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
       z-index: -1;
-      background-image: url('https://res.cloudinary.com/du5kafsqd/image/upload/v1748204436/xsv74d3w4fxnomxrbpze.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background-color: black;
     }
 
     .background-video {
@@ -37,9 +34,23 @@
       object-fit: cover;
     }
 
+    #blurred-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 2;
+      filter: blur(20px) brightness(1.1);
+      opacity: 0;
+      transition: opacity 2s ease;
+      pointer-events: none;
+    }
+
     .overlay {
       position: relative;
-      z-index: 1;
+      z-index: 3;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
@@ -73,7 +84,7 @@
       text-align: center;
       font-size: 1rem;
       color: #cbd5e1;
-      z-index: 1;
+      z-index: 3;
     }
 
     @keyframes fadeIn {
@@ -94,9 +105,10 @@
       <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748204438/fhcqsk9auahvbb8pjmog.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
+    <canvas id="snapshot-canvas" style="display: none;"></canvas>
+    <img id="blurred-overlay" alt="Blurred frame" />
   </div>
 
-  <!-- ✅ Move overlay OUTSIDE the video container -->
   <div class="overlay">
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
@@ -106,11 +118,36 @@
 
   <script>
     const video = document.getElementById('hero-video');
-    video.addEventListener('ended', () => {
-      video.pause();
-      video.currentTime = video.duration;
+    const canvas = document.getElementById('snapshot-canvas');
+    const blurredOverlay = document.getElementById('blurred-overlay');
+    const ctx = canvas.getContext('2d');
+    let fading = false;
+
+    video.addEventListener('timeupdate', () => {
+      if (!fading && video.duration - video.currentTime <= 2) {
+        fading = true;
+
+        // Set canvas size and capture frame
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        blurredOverlay.src = canvas.toDataURL('image/jpeg');
+        blurredOverlay.style.opacity = 1;
+
+        // Pause + wait 15s, then replay
+        setTimeout(() => {
+          video.pause();
+          video.currentTime = 0;
+
+          setTimeout(() => {
+            blurredOverlay.style.opacity = 0;
+            video.play();
+            fading = false;
+          }, 15000); // 15-second hold
+        }, 2000); // wait for fade in
+      }
     });
   </script>
 </body>
-
 </html>
+
