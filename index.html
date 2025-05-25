@@ -111,5 +111,18 @@
   </div>
 
   <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (const reg of registrations) {
+        reg.unregister().then(() => {
+          console.log('✅ Service worker removed');
+          location.reload(true);
+        });
+      }
+    });
+  }
+</script>
+
 </body>
 </html>
