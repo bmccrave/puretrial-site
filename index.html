@@ -110,11 +110,11 @@
     </video>
 
     <!-- Loop Video -->
-    <video muted loop playsinline class="background-video" id="loop-video" style="display: none;">
+    <video muted loop playsinline preload="auto" class="background-video" id="loop-video" style="display: none;">
       <source src="video/loop_once.mp4" type="video/mp4" />
     </video>
 
-    <!-- Just a blur layer (no image) -->
+    <!-- Blur Layer -->
     <div id="blurred-overlay"></div>
   </div>
 
@@ -131,6 +131,7 @@
     const blurredOverlay = document.getElementById('blurred-overlay');
 
     let fading = false;
+    loop.load(); // pre-buffer the loop video
 
     intro.addEventListener('timeupdate', () => {
       if (!fading && intro.duration - intro.currentTime <= 2) {
@@ -139,14 +140,18 @@
         // Fade in blur
         blurredOverlay.style.opacity = 1;
 
-        // After blur appears, start the loop
+        // Start loop
         setTimeout(() => {
-          intro.pause();
-          intro.style.display = 'none';
           loop.style.display = 'block';
-          loop.play();
-        }, 2000);
+          loop.play().catch(e => console.error("Loop play error:", e));
+        }, 2000); // after blur appears
       }
+    });
+
+    // Only hide the intro once the loop is confirmed playing
+    loop.addEventListener('playing', () => {
+      intro.pause();
+      intro.style.display = 'none';
     });
   </script>
 </body>
