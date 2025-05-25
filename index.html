@@ -16,14 +16,20 @@
       overflow: hidden;
       background-color: #000;
     }
-    .background-video {
+    .video-bg {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
+      overflow: hidden;
+    }
+    .video-bg iframe {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      pointer-events: none;
     }
     .overlay {
       position: absolute;
@@ -70,9 +76,9 @@
   </style>
 </head>
 <body>
-  <video autoplay muted loop playsinline class="background-video">
-  <source src="https://chat.openai.com/mnt/data/puretrial_background_hosted.mp4" type="video/mp4" />
-</video>
+  <div class="video-bg">
+    <iframe src="https://streamable.com/e/tw459p" frameborder="0" allowfullscreen scrolling="no"></iframe>
+  </div>
 
   <div class="overlay">
     <h1>This Changes Everything.</h1>
