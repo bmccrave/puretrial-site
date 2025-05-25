@@ -35,6 +35,7 @@
       position: absolute;
       top: 0;
       left: 0;
+      z-index: 0;
     }
 
     #blurred-overlay {
@@ -104,18 +105,22 @@
 </head>
 <body>
   <div class="video-container">
+    <!-- Full Intro Video -->
     <video autoplay muted playsinline class="background-video" id="intro-video">
       <source src="video/puretrial_intro.mp4" type="video/mp4" />
     </video>
 
+    <!-- Loop Video: hidden until intro ends -->
     <video muted loop playsinline class="background-video" id="loop-video" style="display: none;">
       <source src="video/loop_once.mp4" type="video/mp4" />
     </video>
 
+    <!-- Blurred overlay image -->
     <canvas id="snapshot-canvas" style="display: none;"></canvas>
     <img id="blurred-overlay" alt="Blurred frame" />
   </div>
 
+  <!-- Main Text Overlay -->
   <div class="overlay">
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
@@ -136,21 +141,21 @@
       if (!fading && intro.duration - intro.currentTime <= 2) {
         fading = true;
 
-        // Capture final frame to canvas
+        // Capture final frame of intro
         canvas.width = intro.videoWidth;
         canvas.height = intro.videoHeight;
         ctx.drawImage(intro, 0, 0, canvas.width, canvas.height);
         blurredOverlay.src = canvas.toDataURL('image/jpeg');
         blurredOverlay.style.opacity = 1;
 
-        // After blur appears, start loop video
+        // Switch to loop video
         setTimeout(() => {
           intro.pause();
           intro.style.display = 'none';
           loop.style.display = 'block';
           loop.play();
-          // ⚠️ DO NOT fade out blurredOverlay — we want it to stay on
-        }, 2000);
+          // DO NOT fade out the blur — it stays on permanently
+        }, 2000); // after blur fades in
       }
     });
   </script>
