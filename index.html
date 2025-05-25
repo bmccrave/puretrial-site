@@ -5,48 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PureTrial</title>
   <style>
-    body {
+    :root {
+      --bg: #0f172a;
+      --fg: #f8fafc;
+      --accent: #38bdf8;
+    }
+    * {
       margin: 0;
       padding: 0;
-      background-color: #0f172a;
-      color: #f1f5f9;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
       text-align: center;
     }
-    h1 {
-      font-size: 2.5rem;
-      margin: 0 20px;
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      animation: fadeIn 1s ease-out;
     }
-    p {
-      font-size: 1.1rem;
-      margin: 20px;
+    header p {
+      font-size: 1.25rem;
+      color: #94a3b8;
       max-width: 600px;
+      margin: 0 auto 2rem;
+      animation: fadeIn 1.5s ease-out;
     }
-    .blink {
-      animation: blink 1s infinite;
+    .cta {
+      margin-top: 2rem;
+      animation: fadeIn 2s ease-out;
     }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+    .cta a {
+      background: var(--accent);
+      color: #0f172a;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
     }
-    .footer {
+    footer {
       position: absolute;
       bottom: 20px;
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       color: #64748b;
+      animation: fadeIn 3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <h1>A Revolution in Clinical Research Is Coming<span class="blink">_</span></h1>
-  <p>Minimal burden. Maximum compliance. Zero apps. <br />PureTrial is quietly building the future of protocol logic and patient data collection.</p>
-  <div class="footer">
-    &copy; 2024 PureTrial. All rights reserved.
+  <header>
+    <h1>A Revolution in Clinical Research Is Coming</h1>
+    <p>Minimal burden. Maximum compliance. Zero apps.<br />
+    PureTrial is quietly building the future of protocol logic and patient data collection.</p>
+  </header>
+
+  <div class="cta">
+    <a href="#">Stay Tuned</a>
   </div>
+
+  <footer>
+    &copy; 2024 PureTrial. All rights reserved.
+  </footer>
 </body>
 </html>
