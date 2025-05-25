@@ -3,83 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PureTrial</title>
+  <title>Video Background Test</title>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
       height: 100%;
-      font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
-      background-color: #000;
+      background: black;
     }
-    video.background-video {
+
+    video {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      min-width: 100%;
+      min-height: 100%;
       object-fit: cover;
       z-index: -1;
     }
-    .overlay {
+
+    .content {
       position: relative;
       z-index: 1;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 2rem;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
-      color: #f8fafc;
-      padding: 0 20px;
-      animation: fadeIn 2s ease-in-out;
-    }
-    h1 {
-      font-size: 4rem;
-      font-weight: 700;
-      text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-    }
-    p {
-      font-size: 1.5rem;
-      margin-top: 1.5rem;
-      color: #e2e8f0;
-      text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-    }
-    footer {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
-      font-size: 1rem;
-      color: #cbd5e1;
-      z-index: 1;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <video autoplay muted loop playsinline class="background-video">
-  <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-</video>
+  <video autoplay muted loop playsinline>
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 
-<p style="color: red; z-index: 1000; position: absolute; top: 10px; left: 10px;">
-  ❗ If you're seeing this message, the video is not rendering.
-</p>
-
-  <div class="overlay">
-    <h1>This Changes Everything.</h1>
-    <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
+  <div class="content">
+    <p>If you're seeing this text, the video background should be working.</p>
   </div>
-
-  <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
 </body>
 </html>
