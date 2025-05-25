@@ -15,44 +15,37 @@
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
-      background-color: black;
+      background: black;
     }
 
-    .video-container {
+    .background-video,
+    .fallback-image {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
-      z-index: -1;
+      object-fit: cover;
+      z-index: -2;
     }
 
-    .video-container video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .background-video {
       display: block;
     }
 
     .fallback-image {
       display: none;
-      width: 100%;
-      height: 100%;
       background: url('https://res.cloudinary.com/du5kafsqd/image/upload/v1748187753/output_aoqp8h.jpg') no-repeat center center;
       background-size: cover;
     }
 
     @media (max-width: 768px) {
-      .video-container video {
+      .background-video {
         display: none !important;
       }
+
       .fallback-image {
         display: block !important;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
       }
     }
 
@@ -102,18 +95,23 @@
   </style>
 </head>
 <body>
-  <div class="video-container">
-    <video autoplay muted loop playsinline>
-      <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748171979/xs6quopyrfqxmrne1n72.mp4" type="video/mp4" />
-    </video>
-    <div class="fallback-image"></div>
-  </div>
 
+  <!-- Background video -->
+  <video class="background-video" autoplay muted loop playsinline>
+    <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748171979/xs6quopyrfqxmrne1n72.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Fallback image for mobile -->
+  <div class="fallback-image"></div>
+
+  <!-- Main overlay content -->
   <div class="overlay">
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
   </div>
 
   <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
+
 </body>
 </html>
