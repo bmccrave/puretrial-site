@@ -15,21 +15,9 @@
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
-      background-color: black;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: black;
-      z-index: -2;
-    }
-
-    .video-background {
+    .video-container {
       position: fixed;
       top: 0;
       left: 0;
@@ -37,10 +25,9 @@
       height: 100vh;
       z-index: -1;
       overflow: hidden;
-      pointer-events: none;
     }
 
-    .video-background video {
+    .background-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -49,21 +36,16 @@
 
     .fallback-image {
       display: none;
-      background: url('https://res.cloudinary.com/du5kafsqd/image/upload/v1748187753/output_aoqp8h.jpg') no-repeat center center;
-      background-size: cover;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
+    /* Mobile: show image instead of video */
     @media (max-width: 768px) {
-      .video-background {
+      .background-video {
         display: none;
       }
-
       .fallback-image {
         display: block;
       }
@@ -114,68 +96,20 @@
     }
   </style>
 </head>
-  <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for (let registration of registrations) {
-        if (registration.scope === location.origin + "/") {
-          registration.unregister().then(function() {
-            console.log("✅ Old service worker removed.");
-            location.reload(true);
-          });
-        }
-      }
-    });
-  }
-</script>
-
 <body>
-
-  <!-- Preload fallback image for instant swap -->
-  <link rel="preload" as="image" href="https://res.cloudinary.com/du5kafsqd/image/upload/v1748187753/output_aoqp8h.jpg" />
-
-  <!-- Background video -->
-  <div class="video-background" id="video-container">
-    <video id="bg-video" autoplay muted playsinline>
-      <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748171979/xs6quopyrfqxmrne1n72.mp4" type="video/mp4" />
+  <div class="video-container">
+    <video class="background-video" autoplay muted playsinline>
+      <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748204438/ca4divirio7k9qqol57j.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
+    <img class="fallback-image" src="https://res.cloudinary.com/du5kafsqd/image/upload/v1748204436/cabqfrxzytdfkf9w559d.jpg" alt="Fallback background">
   </div>
 
-  <!-- Still image to replace video after play -->
-  <div class="fallback-image" id="fallback-image"></div>
-
-  <!-- Overlay text -->
   <div class="overlay">
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
   </div>
 
   <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
-
-  <!-- Script to swap video with still after playback -->
-  <script>
-    const video = document.getElementById('bg-video');
-    const fallback = document.getElementById('fallback-image');
-
-    video.addEventListener('ended', () => {
-      video.style.display = 'none';
-      fallback.style.display = 'block';
-    });
-  </script>
- <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for (let registration of registrations) {
-        if (registration.scope === location.origin + "/") {
-          registration.unregister().then(function() {
-            console.log("✅ Old service worker removed.");
-            location.reload(true);
-          });
-        }
-      }
-    });
-  }
-</script>
 </body>
 </html>
