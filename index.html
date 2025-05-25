@@ -16,20 +16,14 @@
       overflow: hidden;
       background-color: #000;
     }
-    .video-bg {
+    .background-video {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
+      object-fit: cover;
       z-index: -1;
-      overflow: hidden;
-    }
-    .video-bg iframe {
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      pointer-events: none;
     }
     .overlay {
       position: absolute;
@@ -76,12 +70,10 @@
   </style>
 </head>
 <body>
-  <div class="video-bg">
-    <iframe src="https://streamable.com/e/tw459p" frameborder="0" allowfullscreen scrolling="no"></iframe>
-  </div>
-<video autoplay muted loop playsinline class="background-video">
-  <source src="puretrial_cloudinary_ready" type="video/mp4" />
-</video>
+  <video autoplay muted loop playsinline class="background-video">
+    <source src="puretrial_cloudinary_ready.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 
   <div class="overlay">
     <h1>This Changes Everything.</h1>
