@@ -31,7 +31,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      display: block; /* ✅ Critical fix */
     }
 
     .fallback-image {
@@ -44,10 +44,10 @@
 
     @media (max-width: 768px) {
       .background-video {
-        display: none;
+        display: none !important;
       }
       .fallback-image {
-        display: block;
+        display: block !important;
       }
     }
 
