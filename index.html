@@ -1,11 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PureTrial | SMS ePRO</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PureTrial</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0f172a;
+      color: #f1f5f9;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin: 0 20px;
+    }
+    p {
+      font-size: 1.1rem;
+      margin: 20px;
+      max-width: 600px;
+    }
+    .blink {
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+  </style>
 </head>
 <body>
-  <h1>PureTrial</h1>
-  <p>Your SMS-based logic engine is ready for deployment.</p>
+  <h1>A Revolution in Clinical Research Is Coming<span class="blink">_</span></h1>
+  <p>Minimal burden. Maximum compliance. Zero apps. <br />PureTrial is quietly building the future of protocol logic and patient data collection.</p>
+  <div class="footer">
+    &copy; 2024 PureTrial. All rights reserved.
+  </div>
 </body>
 </html>
