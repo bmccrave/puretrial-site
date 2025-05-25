@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/sw.js"
+  to = "/404"
+  status = 404
