@@ -121,32 +121,67 @@
     const canvas = document.getElementById('snapshot-canvas');
     const blurredOverlay = document.getElementById('blurred-overlay');
     const ctx = canvas.getContext('2d');
+
     let fading = false;
+    let isLooping = false;
+    let reverse = false;
+    let loopStart = 0;
+    let loopEnd = 0;
+
+    video.addEventListener('loadedmetadata', () => {
+      loopEnd = video.duration;
+      loopStart = loopEnd - 4;
+    });
 
     video.addEventListener('timeupdate', () => {
       if (!fading && video.duration - video.currentTime <= 2) {
         fading = true;
 
-        // Set canvas size and capture frame
+        // Capture final frame
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         blurredOverlay.src = canvas.toDataURL('image/jpeg');
         blurredOverlay.style.opacity = 1;
 
-        // Pause + wait 15s, then replay
+        // Wait for fade in, then loop last 4 seconds
         setTimeout(() => {
-          video.pause();
-          video.currentTime = 0;
+          startLoop();
+        }, 2000);
+      }
 
-          setTimeout(() => {
-            blurredOverlay.style.opacity = 0;
-            video.play();
-            fading = false;
-          }, 15000); // 15-second hold
-        }, 2000); // wait for fade in
+      if (isLooping) {
+        if (!reverse && video.currentTime >= loopEnd) {
+          reverse = true;
+        } else if (reverse && video.currentTime <= loopStart) {
+          reverse = false;
+        }
       }
     });
+
+    function startLoop() {
+      isLooping = true;
+      blurredOverlay.style.opacity = 0; // Fade out the blur
+
+      video.pause();
+      video.currentTime = loopStart;
+      video.playbackRate = 1;
+      video.play();
+
+      const loopInterval = setInterval(() => {
+        if (!isLooping) {
+          clearInterval(loopInterval);
+          return;
+        }
+
+        // Reverse playback if supported
+        try {
+          video.playbackRate = reverse ? -1 : 1;
+        } catch (e) {
+          // fallback logic can be added here
+        }
+      }, 100);
+    }
   </script>
 </body>
 </html>
