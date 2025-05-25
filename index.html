@@ -44,9 +44,8 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      object-fit: cover;
       z-index: 1;
-      filter: blur(20px) brightness(1.1);
+      backdrop-filter: blur(20px) brightness(1.1);
       opacity: 0;
       transition: opacity 2s ease;
       pointer-events: none;
@@ -105,22 +104,20 @@
 </head>
 <body>
   <div class="video-container">
-    <!-- Full Intro Video -->
+    <!-- Intro Video -->
     <video autoplay muted playsinline class="background-video" id="intro-video">
       <source src="video/puretrial_intro.mp4" type="video/mp4" />
     </video>
 
-    <!-- Loop Video: hidden until intro ends -->
+    <!-- Loop Video -->
     <video muted loop playsinline class="background-video" id="loop-video" style="display: none;">
       <source src="video/loop_once.mp4" type="video/mp4" />
     </video>
 
-    <!-- Blurred overlay image -->
-    <canvas id="snapshot-canvas" style="display: none;"></canvas>
-    <img id="blurred-overlay" alt="Blurred frame" />
+    <!-- Just a blur layer (no image) -->
+    <div id="blurred-overlay"></div>
   </div>
 
-  <!-- Main Text Overlay -->
   <div class="overlay">
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
@@ -131,9 +128,7 @@
   <script>
     const intro = document.getElementById('intro-video');
     const loop = document.getElementById('loop-video');
-    const canvas = document.getElementById('snapshot-canvas');
     const blurredOverlay = document.getElementById('blurred-overlay');
-    const ctx = canvas.getContext('2d');
 
     let fading = false;
 
@@ -141,21 +136,16 @@
       if (!fading && intro.duration - intro.currentTime <= 2) {
         fading = true;
 
-        // Capture final frame of intro
-        canvas.width = intro.videoWidth;
-        canvas.height = intro.videoHeight;
-        ctx.drawImage(intro, 0, 0, canvas.width, canvas.height);
-        blurredOverlay.src = canvas.toDataURL('image/jpeg');
+        // Fade in blur
         blurredOverlay.style.opacity = 1;
 
-        // Switch to loop video
+        // After blur appears, start the loop
         setTimeout(() => {
           intro.pause();
           intro.style.display = 'none';
           loop.style.display = 'block';
           loop.play();
-          // DO NOT fade out the blur — it stays on permanently
-        }, 2000); // after blur fades in
+        }, 2000);
       }
     });
   </script>
