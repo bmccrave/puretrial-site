@@ -5,25 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PureTrial</title>
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
-      background: black;
+      box-sizing: border-box;
     }
 
-    .background-video {
-      position: fixed;
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .video-container {
+      position: absolute;
       top: 0;
       left: 0;
-      min-width: 100vw;
-      min-height: 100vh;
-      width: auto;
-      height: auto;
-      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       z-index: -1;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .overlay {
@@ -72,10 +79,12 @@
   </style>
 </head>
 <body>
-  <video class="background-video" autoplay muted loop playsinline>
-    <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748171979/xs6quopyrfqxmrne1n72.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+  <div class="video-container">
+    <video autoplay muted loop playsinline>
+      <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748171979/xs6quopyrfqxmrne1n72.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
   <div class="overlay">
     <h1>This Changes Everything.</h1>
@@ -85,4 +94,3 @@
   <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
 </body>
 </html>
-
