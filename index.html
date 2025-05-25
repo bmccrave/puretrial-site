@@ -28,10 +28,13 @@
       background-color: black;
     }
 
-    .background-video {
+    video.background-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     #blurred-overlay {
@@ -41,7 +44,7 @@
       width: 100vw;
       height: 100vh;
       object-fit: cover;
-      z-index: 2;
+      z-index: 1;
       filter: blur(20px) brightness(1.1);
       opacity: 0;
       transition: opacity 2s ease;
@@ -50,7 +53,7 @@
 
     .overlay {
       position: relative;
-      z-index: 3;
+      z-index: 2;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
@@ -84,7 +87,7 @@
       text-align: center;
       font-size: 1rem;
       color: #cbd5e1;
-      z-index: 3;
+      z-index: 2;
     }
 
     @keyframes fadeIn {
@@ -101,10 +104,14 @@
 </head>
 <body>
   <div class="video-container">
-    <video autoplay muted playsinline class="background-video" id="hero-video">
+    <video autoplay muted playsinline class="background-video" id="intro-video">
       <source src="video/puretrial_intro.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
     </video>
+
+    <video muted loop playsinline class="background-video" id="loop-video" style="display: none;">
+      <source src="video/loop_once.mp4" type="video/mp4" />
+    </video>
+
     <canvas id="snapshot-canvas" style="display: none;"></canvas>
     <img id="blurred-overlay" alt="Blurred frame" />
   </div>
@@ -117,71 +124,35 @@
   <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
 
   <script>
-    const video = document.getElementById('hero-video');
+    const intro = document.getElementById('intro-video');
+    const loop = document.getElementById('loop-video');
     const canvas = document.getElementById('snapshot-canvas');
     const blurredOverlay = document.getElementById('blurred-overlay');
     const ctx = canvas.getContext('2d');
 
     let fading = false;
-    let isLooping = false;
-    let reverse = false;
-    let loopStart = 0;
-    let loopEnd = 0;
 
-    video.addEventListener('loadedmetadata', () => {
-      loopEnd = video.duration;
-      loopStart = loopEnd - 4;
-    });
-
-    video.addEventListener('timeupdate', () => {
-      if (!fading && video.duration - video.currentTime <= 2) {
+    intro.addEventListener('timeupdate', () => {
+      if (!fading && intro.duration - intro.currentTime <= 2) {
         fading = true;
 
-        // Capture final frame
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Capture final frame to canvas
+        canvas.width = intro.videoWidth;
+        canvas.height = intro.videoHeight;
+        ctx.drawImage(intro, 0, 0, canvas.width, canvas.height);
         blurredOverlay.src = canvas.toDataURL('image/jpeg');
         blurredOverlay.style.opacity = 1;
 
-        // Wait for fade in, then loop last 4 seconds
+        // After blur appears, start loop video
         setTimeout(() => {
-          startLoop();
+          intro.pause();
+          intro.style.display = 'none';
+          loop.style.display = 'block';
+          loop.play();
+          // ⚠️ DO NOT fade out blurredOverlay — we want it to stay on
         }, 2000);
       }
-
-      if (isLooping) {
-        if (!reverse && video.currentTime >= loopEnd) {
-          reverse = true;
-        } else if (reverse && video.currentTime <= loopStart) {
-          reverse = false;
-        }
-      }
     });
-
-    function startLoop() {
-      isLooping = true;
-      blurredOverlay.style.opacity = 0; // Fade out the blur
-
-      video.pause();
-      video.currentTime = loopStart;
-      video.playbackRate = 1;
-      video.play();
-
-      const loopInterval = setInterval(() => {
-        if (!isLooping) {
-          clearInterval(loopInterval);
-          return;
-        }
-
-        // Reverse playback if supported
-        try {
-          video.playbackRate = reverse ? -1 : 1;
-        } catch (e) {
-          // fallback logic can be added here
-        }
-      }, 100);
-    }
   </script>
 </body>
 </html>
