@@ -119,8 +119,90 @@
   </div>
 
   <div class="overlay">
+    <div class="overlay">
+  <div class="overlay-content">
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
+    
+    <form method="POST" action="/invite" class="invite-form">
+      <input type="email" name="email" placeholder="Enter your email" required />
+      <button type="submit">Request an Invite</button>
+    </form>
+    
+    <p class="subnote">We’ll only email you with launch updates. No spam. Ever.</p>
+  </div>
+</div>
+
+<style>
+  .overlay {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    z-index: 2;
+    padding: 0 1rem;
+  }
+
+  .overlay-content {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .overlay h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+
+  .overlay p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #ddd;
+  }
+
+  .invite-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-top: 1.5rem;
+  }
+
+  .invite-form input {
+    width: 100%;
+    max-width: 400px;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 0 0 1px #ccc;
+  }
+
+  .invite-form button {
+    background: white;
+    color: black;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .invite-form button:hover {
+    background: #f0f0f0;
+  }
+
+  .subnote {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-top: 0.5rem;
+  }
+</style>
   </div>
 
   <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
