@@ -28,14 +28,10 @@
       background-color: black;
     }
 
-    video.background-video {
+    .background-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 0;
     }
 
     #blurred-overlay {
@@ -44,8 +40,9 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 1;
-      backdrop-filter: blur(20px) brightness(1.1);
+      object-fit: cover;
+      z-index: 2;
+      filter: blur(20px) brightness(1.1);
       opacity: 0;
       transition: opacity 2s ease;
       pointer-events: none;
@@ -53,7 +50,7 @@
 
     .overlay {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
@@ -87,7 +84,7 @@
       text-align: center;
       font-size: 1rem;
       color: #cbd5e1;
-      z-index: 2;
+      z-index: 3;
     }
 
     @keyframes fadeIn {
@@ -104,136 +101,51 @@
 </head>
 <body>
   <div class="video-container">
-    <!-- Intro Video -->
-    <video autoplay muted playsinline class="background-video" id="intro-video">
-      <source src="video/puretrial_intro.mp4" type="video/mp4" />
+    <video autoplay muted playsinline class="background-video" id="hero-video">
+      <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748204438/fhcqsk9auahvbb8pjmog.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
     </video>
-
-    <!-- Loop Video -->
-    <video muted loop playsinline preload="auto" class="background-video" id="loop-video" style="display: none;">
-      <source src="video/loop_once.mp4" type="video/mp4" />
-    </video>
-
-    <!-- Blur Layer -->
-    <div id="blurred-overlay"></div>
+    <canvas id="snapshot-canvas" style="display: none;"></canvas>
+    <img id="blurred-overlay" alt="Blurred frame" />
   </div>
 
   <div class="overlay">
-    <div class="overlay">
-  <div class="overlay-content">
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
-    
-    <form method="POST" action="/invite" class="invite-form">
-      <input type="email" name="email" placeholder="Enter your email" required />
-      <button type="submit">Request an Invite</button>
-    </form>
-    
-    <p class="subnote">We’ll only email you with launch updates. No spam. Ever.</p>
-  </div>
-</div>
-
-<style>
-  .overlay {
-    position: absolute;
-    top: 10%;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: white;
-    z-index: 2;
-    padding: 0 1rem;
-  }
-
-  .overlay-content {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .overlay h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-  }
-
-  .overlay p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    color: #ddd;
-  }
-
-  .invite-form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-    margin-top: 1.5rem;
-  }
-
-  .invite-form input {
-    width: 100%;
-    max-width: 400px;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    box-shadow: 0 0 0 1px #ccc;
-  }
-
-  .invite-form button {
-    background: white;
-    color: black;
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 14px 28px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  .invite-form button:hover {
-    background: #f0f0f0;
-  }
-
-  .subnote {
-    font-size: 0.85rem;
-    color: #aaa;
-    margin-top: 0.5rem;
-  }
-</style>
   </div>
 
   <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
 
   <script>
-    const intro = document.getElementById('intro-video');
-    const loop = document.getElementById('loop-video');
+    const video = document.getElementById('hero-video');
+    const canvas = document.getElementById('snapshot-canvas');
     const blurredOverlay = document.getElementById('blurred-overlay');
-
+    const ctx = canvas.getContext('2d');
     let fading = false;
-    loop.load(); // pre-buffer the loop video
 
-    intro.addEventListener('timeupdate', () => {
-      if (!fading && intro.duration - intro.currentTime <= 2) {
+    video.addEventListener('timeupdate', () => {
+      if (!fading && video.duration - video.currentTime <= 2) {
         fading = true;
 
-        // Fade in blur
+        // Set canvas size and capture frame
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        blurredOverlay.src = canvas.toDataURL('image/jpeg');
         blurredOverlay.style.opacity = 1;
 
-        // Start loop
+        // Pause + wait 15s, then replay
         setTimeout(() => {
-          loop.style.display = 'block';
-          loop.play().catch(e => console.error("Loop play error:", e));
-        }, 2000); // after blur appears
-      }
-    });
+          video.pause();
+          video.currentTime = 0;
 
-    // Only hide the intro once the loop is confirmed playing
-    loop.addEventListener('playing', () => {
-      intro.pause();
-      intro.style.display = 'none';
+          setTimeout(() => {
+            blurredOverlay.style.opacity = 0;
+            video.play();
+            fading = false;
+          }, 15000); // 15-second hold
+        }, 2000); // wait for fade in
+      }
     });
   </script>
 </body>
