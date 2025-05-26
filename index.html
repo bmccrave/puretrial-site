@@ -25,13 +25,35 @@
       height: 100vh;
       overflow: hidden;
       z-index: -1;
-      background-color: black;
+      background: url('output.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
 
     .background-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .desktop-video {
+      display: block;
+    }
+
+    .mobile-video {
+      display: none;
+    }
+
+    @media only screen and (max-width: 768px) {
+      .desktop-video {
+        display: none !important;
+      }
+
+      .mobile-video {
+        display: block !important;
+      }
     }
 
     #blurred-overlay {
@@ -91,22 +113,24 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    @media only screen and (max-width: 768px) {
-      .background-video {
-        display: none;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="video-container">
-    <video autoplay muted playsinline class="background-video" id="hero-video">
-      <source src="https://res.cloudinary.com/du5kafsqd/video/upload/v1748204438/fhcqsk9auahvbb8pjmog.mp4" type="video/mp4" />
+    <!-- Desktop video -->
+    <video autoplay muted playsinline id="hero-video" class="desktop-video background-video" preload="auto">
+      <source src="loop_once.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
+
+    <!-- Mobile video -->
+    <video autoplay muted playsinline loop id="mobile-video" class="mobile-video background-video" preload="auto" poster="output.jpg">
+      <source src="output.webm" type="video/webm" />
+      Your browser does not support the video tag.
+    </video>
+
     <canvas id="snapshot-canvas" style="display: none;"></canvas>
-    <img id="blurred-overlay" alt="Blurred frame" />
+    <img id="blurred-overlay" alt="Blurred frame" loading="lazy" />
   </div>
 
   <div class="overlay">
@@ -123,30 +147,31 @@
     const ctx = canvas.getContext('2d');
     let fading = false;
 
-    video.addEventListener('timeupdate', () => {
-      if (!fading && video.duration - video.currentTime <= 2) {
-        fading = true;
+    // Only run on desktop
+    if (video) {
+      video.addEventListener('timeupdate', () => {
+        if (!fading && video.duration - video.currentTime <= 2) {
+          fading = true;
 
-        // Set canvas size and capture frame
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        blurredOverlay.src = canvas.toDataURL('image/jpeg');
-        blurredOverlay.style.opacity = 1;
-
-        // Pause + wait 15s, then replay
-        setTimeout(() => {
-          video.pause();
-          video.currentTime = 0;
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          blurredOverlay.src = canvas.toDataURL('image/jpeg');
+          blurredOverlay.style.opacity = 1;
 
           setTimeout(() => {
-            blurredOverlay.style.opacity = 0;
-            video.play();
-            fading = false;
-          }, 15000); // 15-second hold
-        }, 2000); // wait for fade in
-      }
-    });
+            video.pause();
+            video.currentTime = 0;
+
+            setTimeout(() => {
+              blurredOverlay.style.opacity = 0;
+              video.play();
+              fading = false;
+            }, 15000);
+          }, 2000);
+        }
+      });
+    }
   </script>
 </body>
 </html>
