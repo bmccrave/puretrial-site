@@ -38,6 +38,7 @@
 }
 
 
+
     }
 
     #blurred-overlay {
@@ -114,7 +115,7 @@ footer {
   <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/puretrial2.mp4" type="video/mp4" />
 </video>
 
-<video id="loopVideo" autoplay muted playsinline loop preload="auto" style="opacity: 0; visibility: hidden;">
+<video id="loopVideo" muted playsinline loop style="opacity: 0; visibility: hidden;">
   <source src="https://cdn.example.com/loop_once2.mp4" type="video/mp4" />
 </video>
 
@@ -123,37 +124,45 @@ footer {
   <!-- Blur overlay (shown only after intro) -->
   <div id="blurred-overlay"></div>
 
-  <script>
+<script>
   const introVideo = document.getElementById("introVideo");
   const loopVideo = document.getElementById("loopVideo");
   const blur = document.getElementById("blurred-overlay");
 
+  // Make sure loop video is visible (but transparent) from the start
+  loopVideo.style.visibility = "visible";
   loopVideo.style.opacity = "0";
-  loopVideo.style.visibility = "visible"; // keep it visible, just transparent
 
-  // When intro ends
+  // When the intro ends
   introVideo.addEventListener("ended", () => {
-    loopVideo.play().then(() => {
-      loopVideo.style.opacity = "1";
-      blur.style.opacity = "1";
-      introVideo.style.display = "none";
-    }).catch((e) => {
-      console.error("Loop video failed to play:", e);
-    });
-  });
+    console.log("Intro ended");
 
-  // Fallback timeout
-  setTimeout(() => {
-    if (introVideo.currentTime >= introVideo.duration - 0.5) {
+    // Wait for loop video to be ready
+    loopVideo.addEventListener("canplaythrough", () => {
+      console.log("Loop video ready");
       loopVideo.play().then(() => {
-        introVideo.style.display = "none";
         loopVideo.style.opacity = "1";
         blur.style.opacity = "1";
-      }).catch((e) => {
-        console.error("Loop video (fallback) failed to play:", e);
+        introVideo.style.display = "none";
+      }).catch((err) => {
+        console.error("Failed to play loop video:", err);
       });
+    });
+
+    // In case it's already loaded, trigger it manually
+    if (loopVideo.readyState >= 3) {
+      const event = new Event("canplaythrough");
+      loopVideo.dispatchEvent(event);
     }
-  }, 12000); // Adjust to match your intro length
+  });
+
+  // Fallback timeout (in case "ended" fails)
+  setTimeout(() => {
+    if (introVideo.currentTime >= introVideo.duration - 0.5 || introVideo.ended) {
+      const event = new Event("ended");
+      introVideo.dispatchEvent(event);
+    }
+  }, 12000);
 </script>
 
 
