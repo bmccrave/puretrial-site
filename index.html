@@ -25,8 +25,18 @@
     }
 
     #loopVideo {
-  display: none;
-  z-index: 1; /* above background, below text/overlay */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  visibility: hidden;
+}
+
 
     }
 
@@ -104,10 +114,10 @@ footer {
   <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/puretrial2.mp4" type="video/mp4" />
 </video>
 
-<video id="loopVideo" muted playsinline loop style="display: none;">
+<video id="loopVideo" muted playsinline loop preload="auto" style="visibility: hidden;">
   <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/loop_once2.mp4" type="video/mp4" />
-
 </video>
+
 
 
   <!-- Blur overlay (shown only after intro) -->
