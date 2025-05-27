@@ -128,25 +128,18 @@ footer {
   const loopVideo = document.getElementById("loopVideo");
   const blur = document.getElementById("blurred-overlay");
 
-  // Ensure loop video is preloaded and hidden
   loopVideo.style.opacity = "0";
   loopVideo.style.visibility = "visible";
 
-  // When loopVideo is ready to play
-  loopVideo.addEventListener("canplaythrough", () => {
-  loopVideo.style.visibility = "visible";
-  loopVideo.style.opacity = "1";
-  blur.style.opacity = "1";
-  introVideo.style.display = "none";
-});
+  // Play loop video when intro ends
+  introVideo.addEventListener("ended", () => {
+    loopVideo.play();
+    loopVideo.style.opacity = "1";
+    blur.style.opacity = "1";
+    introVideo.style.display = "none";
+  });
 
-introVideo.addEventListener("ended", () => {
-  loopVideo.play();
-  loopVideo.style.opacity = "1";
-  blur.style.opacity = "1";
-  introVideo.style.display = "none";
-});
-  // Safety timeout fallback
+  // Backup timeout (e.g., in case 'ended' event fails)
   setTimeout(() => {
     if (introVideo.currentTime >= introVideo.duration - 0.5) {
       loopVideo.play();
@@ -154,15 +147,16 @@ introVideo.addEventListener("ended", () => {
       loopVideo.style.opacity = "1";
       blur.style.opacity = "1";
     }
-  }, 12000); // Adjust to match intro length
+  }, 12000); // Adjust based on intro video length
 </script>
+
 
   <div class="overlay">
   <h1>This Changes Everything.</h1>
   <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
 </div>
 
-<footer>&copy; 2024 PureTrial. All rights reserved.</footer>
+<footer>&copy; 2025 PureTrial. All rights reserved.</footer>
 
 </body>
 </html>
