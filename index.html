@@ -120,46 +120,41 @@ footer {
 
 
 
+
   <!-- Blur overlay (shown only after intro) -->
   <div id="blurred-overlay"></div>
 
   <script>
-    const introVideo = document.getElementById("introVideo");
-    const loopVideo = document.getElementById("loopVideo");
-    const blur = document.getElementById("blurred-overlay");
+  const introVideo = document.getElementById("introVideo");
+  const loopVideo = document.getElementById("loopVideo");
+  const blur = document.getElementById("blurred-overlay");
 
-    introVideo.addEventListener("ended", () => {
-  introVideo.style.display = "none";
+  // Ensure loop video is preloaded and hidden
+  loopVideo.style.opacity = "0";
   loopVideo.style.visibility = "visible";
-  loopVideo.style.opacity = "1";
-  blur.style.opacity = "1";
-  loopVideo.play();
-});
 
+  // When loopVideo is ready to play
+  loopVideo.addEventListener("canplay", () => {
+    // Once intro finishes
+    introVideo.addEventListener("ended", () => {
+      loopVideo.play();
+      introVideo.style.display = "none";
+      loopVideo.style.opacity = "1";
+      blur.style.opacity = "1";
     });
+  });
 
-    // Fallback in case 'ended' doesn't fire
-    setTimeout(() => {
-      if (introVideo.currentTime >= introVideo.duration - 1) {
-        introVideo.style.display = "none";
-        loopVideo.style.display = "block";
-        blur.style.opacity = "1";
-        loopVideo.play();
-      }
-    }, 12000); // Adjust to match length of puraply2.mp4
+  // Safety timeout fallback
+  setTimeout(() => {
+    if (introVideo.currentTime >= introVideo.duration - 0.5) {
+      loopVideo.play();
+      introVideo.style.display = "none";
+      loopVideo.style.opacity = "1";
+      blur.style.opacity = "1";
+    }
+  }, 12000); // Adjust to match intro length
+</script>
 
-    // Helper: check if playing
-    Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
-      get: function () {
-        return !!(
-          this.currentTime > 0 &&
-          !this.paused &&
-          !this.ended &&
-          this.readyState > 2
-        );
-      }
-    });
-  </script>
   <div class="overlay">
   <h1>This Changes Everything.</h1>
   <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
