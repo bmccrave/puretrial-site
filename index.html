@@ -62,15 +62,37 @@
   <div id="blurred-overlay"></div>
 
   <script>
-    const introVideo = document.getElementById("introVideo");
-    const loopVideo = document.getElementById("loopVideo");
+  const introVideo = document.getElementById("introVideo");
+  const loopVideo = document.getElementById("loopVideo");
+  const blur = document.getElementById("blurred-overlay");
 
-    introVideo.addEventListener("ended", () => {
+  introVideo.addEventListener("ended", () => {
+    introVideo.style.display = "none";
+    loopVideo.style.display = "block";
+    blur.style.opacity = "1";  // fade in blur
+    loopVideo.play();
+  });
+
+  // Fallback if 'ended' event doesn't fire
+  setTimeout(() => {
+    if (!loopVideo.playing && introVideo.currentTime > 2) {
       introVideo.style.display = "none";
       loopVideo.style.display = "block";
+      blur.style.opacity = "1";
       loopVideo.play();
-    });
+    }
+  }, 12000);
 
-    // Fallback: if the "ended" event doesn’t fire, force the swap after X seconds
-    setTimeout(() => {
-      if (introVideo
+  // Helper: track whether a video is playing
+  Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
+    get: function () {
+      return !!(
+        this.currentTime > 0 &&
+        !this.paused &&
+        !this.ended &&
+        this.readyState > 2
+      );
+    }
+  });
+</script>
+
