@@ -114,10 +114,9 @@ footer {
   <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/puretrial2.mp4" type="video/mp4" />
 </video>
 
-<video id="loopVideo" muted playsinline loop preload="auto" style="visibility: hidden;">
-  <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/loop_once2.mp4" type="video/mp4" />
+<video id="loopVideo" autoplay muted playsinline loop preload="auto" style="opacity: 0; visibility: hidden;">
+  <source src="https://cdn.example.com/loop_once2.mp4" type="video/mp4" />
 </video>
-
 
 
 
@@ -134,13 +133,12 @@ footer {
   loopVideo.style.visibility = "visible";
 
   // When loopVideo is ready to play
-  loopVideo.addEventListener("canplay", () => {
-    // Once intro finishes
-    introVideo.addEventListener("ended", () => {
-      loopVideo.play();
-      introVideo.style.display = "none";
-      loopVideo.style.opacity = "1";
-      blur.style.opacity = "1";
+  loopVideo.addEventListener("canplaythrough", () => {
+  loopVideo.style.visibility = "visible";
+  loopVideo.style.opacity = "1";
+  blur.style.opacity = "1";
+  introVideo.style.display = "none";
+});
     });
   });
 
