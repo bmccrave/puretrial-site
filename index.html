@@ -31,17 +31,18 @@
     }
 
     #blurred-overlay {
-      z-index: 5;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      backdrop-filter: blur(10px);
-      z-index: 10;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(10px);
+  z-index: 5; /* lower than overlay text */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
     }
 
     /* Overlay content */
