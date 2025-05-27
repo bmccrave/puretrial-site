@@ -3,26 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <title>PureTrial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background-color: black;
       overflow: hidden;
+      background: black;
+      font-family: 'Segoe UI', sans-serif;
     }
-    #introVideo,
-    #loopVideo {
+
+    video {
       position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
+      z-index: 0;
     }
+
     #loopVideo {
       display: none;
     }
+
     #blurred-overlay {
       position: absolute;
       top: 0;
@@ -32,67 +37,86 @@
       backdrop-filter: blur(10px);
       z-index: 10;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    /* Overlay content */
+    .content {
+      position: relative;
+      z-index: 20;
+      color: white;
+      text-align: center;
+      padding-top: 20vh;
+    }
+
+    .logo {
+      font-size: 3em;
+      font-weight: bold;
+      margin-bottom: 0.5em;
+    }
+
+    .subtitle {
+      font-size: 1.5em;
+      opacity: 0.8;
     }
   </style>
 </head>
 <body>
 
+  <!-- Background videos -->
   <video id="introVideo" autoplay muted playsinline>
-  <source src="https://bmccrave.github.io/puretrial-site/video/puraply2.mp4" type="video/mp4" />
-</video>
+    <source src="https://bmccrave.github.io/puretrial-site/video/puraply2.mp4" type="video/mp4" />
+  </video>
 
-<video id="loopVideo" muted playsinline loop style="display: none;">
-  <source src="https://bmccrave.github.io/puretrial-site/video/loop_video2.mp4" type="video/mp4" />
-</video>
+  <video id="loopVideo" muted playsinline loop>
+    <source src="https://bmccrave.github.io/puretrial-site/video/loop_video2.mp4" type="video/mp4" />
+  </video>
 
-<div id="blurred-overlay" style="
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  backdrop-filter: blur(10px);
-  z-index: 10;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-"></div>
-
-
+  <!-- Blur overlay (shown only after intro) -->
   <div id="blurred-overlay"></div>
 
+  <!-- Overlay content (can be anything) -->
+  <div class="content">
+    <div class="logo">PureTrial</div>
+    <div class="subtitle">Clinical Research, Evolved</div>
+  </div>
+
   <script>
-  const introVideo = document.getElementById("introVideo");
-  const loopVideo = document.getElementById("loopVideo");
-  const blur = document.getElementById("blurred-overlay");
+    const introVideo = document.getElementById("introVideo");
+    const loopVideo = document.getElementById("loopVideo");
+    const blur = document.getElementById("blurred-overlay");
 
-  introVideo.addEventListener("ended", () => {
-    introVideo.style.display = "none";
-    loopVideo.style.display = "block";
-    blur.style.opacity = "1";  // fade in blur
-    loopVideo.play();
-  });
-
-  // Fallback if 'ended' event doesn't fire
-  setTimeout(() => {
-    if (!loopVideo.playing && introVideo.currentTime > 2) {
+    introVideo.addEventListener("ended", () => {
       introVideo.style.display = "none";
       loopVideo.style.display = "block";
       blur.style.opacity = "1";
       loopVideo.play();
-    }
-  }, 12000);
+    });
 
-  // Helper: track whether a video is playing
-  Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
-    get: function () {
-      return !!(
-        this.currentTime > 0 &&
-        !this.paused &&
-        !this.ended &&
-        this.readyState > 2
-      );
-    }
-  });
-</script>
+    // Fallback in case 'ended' doesn't fire
+    setTimeout(() => {
+      if (introVideo.currentTime >= introVideo.duration - 1) {
+        introVideo.style.display = "none";
+        loopVideo.style.display = "block";
+        blur.style.opacity = "1";
+        loopVideo.play();
+      }
+    }, 12000); // Adjust to match length of puraply2.mp4
+
+    // Helper: check if playing
+    Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
+      get: function () {
+        return !!(
+          this.currentTime > 0 &&
+          !this.paused &&
+          !this.ended &&
+          this.readyState > 2
+        );
+      }
+    });
+  </script>
+</body>
+</html>
+
 
