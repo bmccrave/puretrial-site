@@ -2,165 +2,169 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PureTrial</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PureTrial</title>
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background: black;
-      font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
     }
 
-    video {
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: -1;
+      background: url('output.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .background-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .desktop-video {
+      display: block;
+    }
+
+    .mobile-video {
+      display: none;
+    }
+
+    @media only screen and (max-width: 768px) {
+      .desktop-video {
+        display: none !important;
+      }
+
+      .mobile-video {
+        display: block !important;
+      }
+    }
+
+    #blurred-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
-      z-index: 0;
+      z-index: 2;
+      filter: blur(20px) brightness(1.1);
+      opacity: 0;
+      transition: opacity 2s ease;
+      pointer-events: none;
     }
 
-    #loopVideo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-  visibility: hidden;
-}
-
-
-    }
-
-    #blurred-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  backdrop-filter: blur(10px);
-  z-index: 5; /* lower than overlay text */
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-    }
-
-    /* Overlay content */
-    .content {
-      position: relative;
-      z-index: 20;
-      color: white;
-      text-align: center;
-      padding-top: 20vh;
-    }
-
-    .logo {
-      font-size: 3em;
-      font-weight: bold;
-      margin-bottom: 0.5em;
-    }
-
-    .subtitle {
-      font-size: 1.5em;
-      opacity: 0.8;
-    }
     .overlay {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  z-index: 2;
-  font-family: 'Segoe UI', sans-serif;
-}
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #f8fafc;
+      padding: 0 20px;
+      animation: fadeIn 2s ease-in-out;
+    }
 
-.overlay h1 {
-  z-index: 10;
-  font-size: 3em;
-  margin-bottom: 0.5em;
-}
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      text-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    }
 
-.overlay p {
-  font-size: 1.2em;
-  line-height: 1.5;
-}
+    p {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+      color: #e2e8f0;
+      text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    }
 
-footer {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
-  text-align: center;
-  color: #ccc;
-  font-size: 0.9em;
-  z-index: 2;
-}
+    footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+      color: #cbd5e1;
+      z-index: 3;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
+  <div class="video-container">
+    <!-- Desktop video -->
+    <!-- Intro video (plays once) -->
+<video id="intro-video" class="desktop-video background-video" autoplay muted playsinline preload="auto">
+  <source src="https://bmccrave.github.io/puretrial-site/video/Puretrial_intro.mp4" type="video/mp4" />
 
-  <!-- Background videos -->
-  <video id="introVideo" autoplay muted playsinline>
-  <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/puretrial2.mp4" type="video/mp4" />
 </video>
 
-<video id="loopVideo" autoplay muted playsinline loop preload="auto" style="opacity: 0; visibility: hidden;">
-  <source src="https://cdn.example.com/loop_once2.mp4" type="video/mp4" />
+<!-- Looping video (starts hidden, loops forever) -->
+<video id="loop-video" class="desktop-video background-video" muted playsinline loop preload="auto" style="opacity: 0;">
+ <img id="blurred-overlay" src="https://bmccrave.github.io/puretrial-site/video/output.jpg" />
 </video>
 
+<img
+  id="blurred-overlay"
+  src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/output.jpg"
+  alt="Blurred background"
+  loading="lazy"
+/>
 
 
-  <!-- Blur overlay (shown only after intro) -->
-  <div id="blurred-overlay"></div>
+    <!-- Mobile video -->
+    <video autoplay muted playsinline loop id="mobile-video" class="mobile-video background-video" preload="auto" poster="output.jpg">
+      <source src="output.webm" type="video/webm" />
+      Your browser does not support the video tag.
+    </video>
 
-  <script>
-  const introVideo = document.getElementById("introVideo");
-  const loopVideo = document.getElementById("loopVideo");
-  const blur = document.getElementById("blurred-overlay");
-
-  // Ensure loop video is preloaded and hidden
-  loopVideo.style.opacity = "0";
-  loopVideo.style.visibility = "visible";
-
-  // When loopVideo is ready to play
-  loopVideo.addEventListener("canplaythrough", () => {
-  loopVideo.style.visibility = "visible";
-  loopVideo.style.opacity = "1";
-  blur.style.opacity = "1";
-  introVideo.style.display = "none";
-});
-    });
-  });
-
-  // Safety timeout fallback
-  setTimeout(() => {
-    if (introVideo.currentTime >= introVideo.duration - 0.5) {
-      loopVideo.play();
-      introVideo.style.display = "none";
-      loopVideo.style.opacity = "1";
-      blur.style.opacity = "1";
-    }
-  }, 12000); // Adjust to match intro length
-</script>
+    <canvas id="snapshot-canvas" style="display: none;"></canvas>
+  </div>
 
   <div class="overlay">
-  <h1>This Changes Everything.</h1>
-  <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
-</div>
+    <h1>This Changes Everything.</h1>
+    <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
+  </div>
 
-<footer>&copy; 2024 PureTrial. All rights reserved.</footer>
+  <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
+  <script>
+  const intro = document.getElementById('intro-video');
+  const loop = document.getElementById('loop-video');
+  const blur = document.getElementById('blurred-overlay');
 
+  intro.addEventListener('ended', () => {
+    // Fade in blur
+    blur.style.opacity = 1;
+
+    // Start loop video underneath
+    loop.style.opacity = 1;
+    loop.play();
+  });
+</script>
 </body>
 </html>
-
-
