@@ -97,29 +97,35 @@
   <div id="blurred-overlay"></div>
 
   <script>
-    const introVideo = document.getElementById("introVideo");
-    const loopVideo = document.getElementById("loopVideo");
-    const blur = document.getElementById("blurred-overlay");
+  const introVideo = document.getElementById("introVideo");
+  const loopVideo = document.getElementById("loopVideo");
+  const blur = document.getElementById("blurred-overlay");
 
-    // preload & fade in loop video only when ready
-    loopVideo.addEventListener("canplaythrough", () => {
-      introVideo.style.display = "none";
+  // Step 1: preload loop video but keep hidden
+  loopVideo.style.visibility = "hidden";
+  loopVideo.style.opacity = "0";
+
+  // Step 2: when intro finishes, fade in loop
+  introVideo.addEventListener("ended", () => {
+    loopVideo.style.visibility = "visible";
+    loopVideo.style.opacity = "1";
+    blur.style.opacity = "1";
+    loopVideo.play();
+    introVideo.style.display = "none";
+  });
+
+  // Step 3: fallback if 'ended' fails
+  setTimeout(() => {
+    if (introVideo.currentTime >= introVideo.duration - 0.5) {
       loopVideo.style.visibility = "visible";
       loopVideo.style.opacity = "1";
       blur.style.opacity = "1";
-    });
+      loopVideo.play();
+      introVideo.style.display = "none";
+    }
+  }, 12000); // adjust based on actual video length
+</script>
 
-    // Safety timeout fallback
-    setTimeout(() => {
-      if (introVideo.currentTime >= introVideo.duration - 0.5) {
-        introVideo.style.display = "none";
-        loopVideo.style.visibility = "visible";
-        loopVideo.style.opacity = "1";
-        blur.style.opacity = "1";
-        loopVideo.play();
-      }
-    }, 12000); // adjust to match intro length
-  </script>
 
   <div class="overlay">
     <h1>This Changes Everything.</h1>
