@@ -60,6 +60,37 @@
       font-size: 1.5em;
       opacity: 0.8;
     }
+    .overlay {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 2;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.overlay h1 {
+  font-size: 3em;
+  margin-bottom: 0.5em;
+}
+
+.overlay p {
+  font-size: 1.2em;
+  line-height: 1.5;
+}
+
+footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: #ccc;
+  font-size: 0.9em;
+  z-index: 2;
+}
+
   </style>
 </head>
 <body>
@@ -118,6 +149,13 @@
       }
     });
   </script>
+  <div class="overlay">
+  <h1>This Changes Everything.</h1>
+  <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
+</div>
+
+<footer>&copy; 2024 PureTrial. All rights reserved.</footer>
+
 </body>
 </html>
 
