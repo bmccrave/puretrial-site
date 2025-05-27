@@ -129,26 +129,33 @@ footer {
   const blur = document.getElementById("blurred-overlay");
 
   loopVideo.style.opacity = "0";
-  loopVideo.style.visibility = "visible";
+  loopVideo.style.visibility = "visible"; // keep it visible, just transparent
 
-  // Play loop video when intro ends
+  // When intro ends
   introVideo.addEventListener("ended", () => {
-    loopVideo.play();
-    loopVideo.style.opacity = "1";
-    blur.style.opacity = "1";
-    introVideo.style.display = "none";
-  });
-
-  // Backup timeout (e.g., in case 'ended' event fails)
-  setTimeout(() => {
-    if (introVideo.currentTime >= introVideo.duration - 0.5) {
-      loopVideo.play();
-      introVideo.style.display = "none";
+    loopVideo.play().then(() => {
       loopVideo.style.opacity = "1";
       blur.style.opacity = "1";
+      introVideo.style.display = "none";
+    }).catch((e) => {
+      console.error("Loop video failed to play:", e);
+    });
+  });
+
+  // Fallback timeout
+  setTimeout(() => {
+    if (introVideo.currentTime >= introVideo.duration - 0.5) {
+      loopVideo.play().then(() => {
+        introVideo.style.display = "none";
+        loopVideo.style.opacity = "1";
+        blur.style.opacity = "1";
+      }).catch((e) => {
+        console.error("Loop video (fallback) failed to play:", e);
+      });
     }
-  }, 12000); // Adjust based on intro video length
+  }, 12000); // Adjust to match your intro length
 </script>
+
 
 
   <div class="overlay">
