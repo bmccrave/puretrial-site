@@ -118,10 +118,17 @@
 <body>
   <div class="video-container">
     <!-- Desktop video -->
-    <video autoplay muted playsinline id="hero-video" class="desktop-video background-video" preload="auto">
-      <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/loop_once.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+    <!-- Intro video (plays once) -->
+<video id="intro-video" class="desktop-video background-video" autoplay muted playsinline preload="auto">
+  <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/Puretrial_intro.mp4" type="video/mp4" />
+</video>
+
+<!-- Looping video (starts hidden, loops forever) -->
+<video id="loop-video" class="desktop-video background-video" muted playsinline loop preload="auto" style="opacity: 0;">
+  <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/loop_output.mp4" type="video/mp4" />
+</video>
+
+<img id="blurred-overlay" alt="Blurred frame" loading="lazy" />
 
     <!-- Mobile video -->
     <video autoplay muted playsinline loop id="mobile-video" class="mobile-video background-video" preload="auto" poster="output.jpg">
@@ -130,7 +137,6 @@
     </video>
 
     <canvas id="snapshot-canvas" style="display: none;"></canvas>
-    <img id="blurred-overlay" alt="Blurred frame" loading="lazy" />
   </div>
 
   <div class="overlay">
@@ -139,39 +145,19 @@
   </div>
 
   <footer>&copy; 2024 PureTrial. All rights reserved.</footer>
-
   <script>
-    const video = document.getElementById('hero-video');
-    const canvas = document.getElementById('snapshot-canvas');
-    const blurredOverlay = document.getElementById('blurred-overlay');
-    const ctx = canvas.getContext('2d');
-    let fading = false;
+  const intro = document.getElementById('intro-video');
+  const loop = document.getElementById('loop-video');
+  const blur = document.getElementById('blurred-overlay');
 
-    // Only run on desktop
-    if (video) {
-      video.addEventListener('timeupdate', () => {
-        if (!fading && video.duration - video.currentTime <= 2) {
-          fading = true;
+  intro.addEventListener('ended', () => {
+    // Fade in blur
+    blur.style.opacity = 1;
 
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-          blurredOverlay.src = canvas.toDataURL('image/jpeg');
-          blurredOverlay.style.opacity = 1;
-
-          setTimeout(() => {
-            video.pause();
-            video.currentTime = 0;
-
-            setTimeout(() => {
-              blurredOverlay.style.opacity = 0;
-              video.play();
-              fading = false;
-            }, 15000);
-          }, 2000);
-        }
-      });
-    }
-  </script>
+    // Start loop video underneath
+    loop.style.opacity = 1;
+    loop.play();
+  });
+</script>
 </body>
 </html>
