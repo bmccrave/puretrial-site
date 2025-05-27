@@ -129,10 +129,13 @@ footer {
     const blur = document.getElementById("blurred-overlay");
 
     introVideo.addEventListener("ended", () => {
-      introVideo.style.display = "none";
-      loopVideo.style.display = "block";
-      blur.style.opacity = "1";
-      loopVideo.play();
+  introVideo.style.display = "none";
+  loopVideo.style.visibility = "visible";
+  loopVideo.style.opacity = "1";
+  blur.style.opacity = "1";
+  loopVideo.play();
+});
+
     });
 
     // Fallback in case 'ended' doesn't fire
