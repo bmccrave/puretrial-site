@@ -24,7 +24,7 @@
       z-index: 0;
     }
 
-    #loopVideo {
+#loopVideo {
   position: absolute;
   top: 0;
   left: 0;
@@ -37,24 +37,19 @@
   visibility: hidden;
 }
 
-
-
-    }
-
-    #blurred-overlay {
+#blurred-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   backdrop-filter: blur(10px);
-  z-index: 5; /* lower than overlay text */
+  z-index: 5;
   pointer-events: none;
   opacity: 0;
   transition: opacity 1s ease-in-out;
 }
-
-    }
+    
 
     /* Overlay content */
     .content {
