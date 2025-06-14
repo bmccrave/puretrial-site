@@ -50,6 +50,64 @@
   transition: opacity 1s ease-in-out;
 }
     
+#video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#introVideo,
+#loopVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#loopVideo {
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1;
+}
+
+#blurred-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  pointer-events: none;
+}
+
+.overlay {
+  position: relative;
+  z-index: 10; /* ensure text stays above blur */
+  text-align: center;
+  color: white;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
 
     /* Overlay content */
     .content {
@@ -104,20 +162,19 @@ footer {
   </style>
 </head>
 <body>
-
-  <!-- Background videos -->
+<!-- Video container with blur applied only over videos -->
+<div id="video-wrapper">
   <video id="introVideo" autoplay muted playsinline>
-  <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/puretrial2.mp4" type="video/mp4" />
-</video>
+    <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/puretrial2.mp4" type="video/mp4" />
+  </video>
 
-<video id="loopVideo" muted playsinline loop style="opacity: 0; visibility: hidden;">
-  <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/loop_once.mp4" type="video/mp4" />
-</video>
+  <video id="loopVideo" muted playsinline autoplay loop>
+    <source src="https://raw.githubusercontent.com/bmccrave/puretrial-site/main/video/loop_once.mp4" type="video/mp4" />
+  </video>
 
-
-
-  <!-- Blur overlay (shown only after intro) -->
   <div id="blurred-overlay"></div>
+</div>
+
 <script>
 const introVideo = document.getElementById("introVideo");
 const loopVideo = document.getElementById("loopVideo");
