@@ -83,6 +83,35 @@
       font-size: 0.9em;
       z-index: 10;
     }
+    .email-box {
+      margin-top: 30px;
+    }
+    
+    .email-box input[type="email"] {
+      padding: 12px 16px;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px 0 0 6px;
+      outline: none;
+      width: 250px;
+      max-width: 80%;
+    }
+    
+    .email-box button {
+      padding: 12px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      background-color: #00cc88;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .email-box button:hover {
+      background-color: #00b376;
+    }
+
   </style>
 </head>
 <body>
@@ -136,6 +165,13 @@
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
   </div>
+  <div class="email-box">
+    <form id="emailForm" action="https://formspree.io/f/mnnvvvey" method="POST">
+      <input type="email" name="email" placeholder="Enter your email..." required />
+      <button type="submit">Notify Me</button>
+    </form>
+  </div>
+</div>
 
   <footer>&copy; 2025 PureTrial. All rights reserved.</footer>
 
