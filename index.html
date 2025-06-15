@@ -90,13 +90,12 @@
       align-items: center;
       animation: fadeIn 1.2s ease 2s forwards;
       opacity: 0;
-      gap: 0;
     }
     
     .email-box input[type="email"] {
-      height: 50px;
+      height: 48px;
       width: 280px;
-      padding: 14px 20px;
+      padding: 0 18px;
       font-size: 1rem;
       font-family: 'Segoe UI', sans-serif;
       font-weight: 400;
@@ -108,7 +107,7 @@
       border-radius: 12px 0 0 12px;
       outline: none;
       backdrop-filter: blur(6px);
-      transition: background 0.3s, border 0.3s;
+      box-sizing: border-box;
     }
     
     .email-box input::placeholder {
@@ -116,10 +115,10 @@
     }
     
     .email-box button {
-      height: 50px;
-      padding: 14px 24px;
+      height: 48px;
+      padding: 0 24px;
       font-size: 1rem;
-      font-family: 'Segoe UI', sans-serif !important;
+      font-family: 'Segoe UI', sans-serif;
       font-weight: 500;
       letter-spacing: 0.2px;
       color: white;
@@ -131,6 +130,7 @@
       backdrop-filter: blur(6px);
       box-shadow: 0 0 6px rgba(255, 255, 255, 0.1);
       transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-sizing: border-box;
     }
     
     .email-box button:hover {
@@ -139,12 +139,12 @@
       transform: translateY(-1px);
     }
     
-    /* Optional: fade-in animation for smooth entrance */
     @keyframes fadeIn {
       to {
         opacity: 1;
       }
     }
+
 
 
   </style>
