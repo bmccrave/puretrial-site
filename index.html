@@ -139,36 +139,65 @@
       transform: translateY(-1px);
     }
     
-    .success-message {
-      animation: fadeIn 0.8s ease-in-out;
-      color: white;
-      font-size: 1.2em;
+    .success-wrapper {
       text-align: center;
-      margin-top: 20px;
-    }
-    
-    .checkmark-circle {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #4CAF50;
-      color: white;
-      font-weight: bold;
-      font-size: 24px;
-      line-height: 40px;
-      margin-bottom: 10px;
+      margin-top: 30px;
+      animation: fadeIn 0.8s ease-in-out;
     }
     
     .success-text {
       font-family: 'Segoe UI', sans-serif;
+      color: white;
+      font-size: 1.2em;
+      margin-top: 12px;
     }
     
-    /* Optional fade-in keyframe */
+    /* SVG Animation Styles */
+    .checkmark {
+      width: 72px;
+      height: 72px;
+      stroke-width: 2;
+      stroke: #4CAF50;
+      fill: none;
+      stroke-miterlimit: 10;
+      margin: auto;
+      display: block;
+      animation: scale .3s ease-in-out forwards;
+    }
+    
+    .checkmark-circle {
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+    
+    .checkmark-check {
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      animation: stroke 0.3s 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+    
+    /* Animations */
+    @keyframes stroke {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+    
+    @keyframes scale {
+      0%, 100% {
+        transform: none;
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+    
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
 
   </style>
 </head>
@@ -236,11 +265,12 @@
             form.reset();
             form.style.display = "none";
             responseDiv.innerHTML = `
-              <div class="success-message">
-                <div class="checkmark-circle">✔</div>
-                <div class="success-text">
-                  <strong>Thanks!</strong> You’re officially on the list.
-                </div>
+              <div class="success-wrapper">
+                <svg class="checkmark" viewBox="0 0 52 52">
+                  <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                  <path class="checkmark-check" fill="none" d="M14 27l7 7 16-16"/>
+                </svg>
+                <div class="success-text">Thanks! You’re on the list.</div>
               </div>`;
           } else {
             throw new Error("Formspree error");
