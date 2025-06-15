@@ -139,12 +139,36 @@
       transform: translateY(-1px);
     }
     
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
+    .success-message {
+      animation: fadeIn 0.8s ease-in-out;
+      color: white;
+      font-size: 1.2em;
+      text-align: center;
+      margin-top: 20px;
     }
-
-
+    
+    .checkmark-circle {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 40px;
+      margin-bottom: 10px;
+    }
+    
+    .success-text {
+      font-family: 'Segoe UI', sans-serif;
+    }
+    
+    /* Optional fade-in keyframe */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
   </style>
 </head>
