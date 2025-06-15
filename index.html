@@ -201,19 +201,23 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
   
-      fetch(form.action, {
+      fetch("https://formspree.io/f/mnnvvvey", {
         method: "POST",
         body: new FormData(form),
-        headers: {
-          'Accept': 'application/json'
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => {
+        if (response.ok) {
+          form.style.display = "none";
+          responseDiv.innerHTML = `
+            <div style="animation: fadeIn 0.8s ease-in-out; color: white; font-size: 1.2em; text-align: center;">
+              ✅ <strong>Thanks! You’re on the list.</strong>
+            </div>`;
+        } else {
+          throw new Error("Network response not ok");
         }
-      }).then(() => {
-        form.style.display = "none";
-        responseDiv.innerHTML = `
-          <div style="animation: fadeIn 0.8s ease-in-out; color: white; font-size: 1.2em; text-align: center;">
-            ✅ <strong>Thanks! You’re on the list.</strong>
-          </div>`;
-      }).catch(() => {
+      })
+      .catch(() => {
         responseDiv.innerHTML = `
           <div style="color: red; animation: fadeIn 0.8s ease-in-out;">
             ❌ Oops, something went wrong. Please try again.
@@ -223,12 +227,14 @@
   </script>
 
 
+
+
   <div class="overlay">
     <h1>This Changes Everything.</h1>
     <p>A new era for clinical research is quietly being engineered.<br>No launch. No hype. Just impact.</p>
 
     <div class="email-box">
-      <form id="emailForm" action="https://formspree.io/f/mnnvvvey" method="POST">
+      <form id="emailForm">
         <input type="email" name="email" placeholder="Enter your email..." required />
         <button type="submit">Notify Me</button>
       </form>
