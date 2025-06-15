@@ -212,8 +212,11 @@
             form.reset();
             form.style.display = "none";
             responseDiv.innerHTML = `
-              <div style="animation: fadeIn 0.8s ease-in-out; color: white; font-size: 1.2em; text-align: center;">
-                ✅ <strong>Thanks! You’re on the list.</strong>
+              <div class="success-message">
+                <div class="checkmark-circle">✔</div>
+                <div class="success-text">
+                  <strong>Thanks!</strong> You’re officially on the list.
+                </div>
               </div>`;
           } else {
             throw new Error("Formspree error");
@@ -228,6 +231,7 @@
       });
     });
   </script>
+
 
 
 
