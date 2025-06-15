@@ -195,6 +195,34 @@
       }
     });
   </script>
+  <script>
+    const form = document.getElementById("emailForm");
+    const responseDiv = document.getElementById("formResponse");
+  
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+  
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(() => {
+        form.style.display = "none";
+        responseDiv.innerHTML = `
+          <div style="animation: fadeIn 0.8s ease-in-out; color: white; font-size: 1.2em; text-align: center;">
+            ✅ <strong>Thanks! You’re on the list.</strong>
+          </div>`;
+      }).catch(() => {
+        responseDiv.innerHTML = `
+          <div style="color: red; animation: fadeIn 0.8s ease-in-out;">
+            ❌ Oops, something went wrong. Please try again.
+          </div>`;
+      });
+    });
+  </script>
+
 
   <div class="overlay">
     <h1>This Changes Everything.</h1>
